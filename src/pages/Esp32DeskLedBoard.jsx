@@ -19,7 +19,7 @@ function Esp32DeskLedBoard() {
       - putting graphics on the panel worked fine
       - one goal was to make this not look like some makeshift, delicate device with exposed wires and pieces hanging around
       - attached the arduino to the back of the panel by screwing it into a piece of cardboard
-      - designed a way for the led board to prop itself up -- by using 3d printed feet that go on the magnetic pegs
+      - designed a way for the led board to prop itself up -- by using 3d printed feet that go on the magnetic pegs and hold the board up at a nice angle (tilted up a bit)
       - chose to use knobs as inputs since they seemed more fun and interesting than buttons. 
         - they're not potentiometers, they're rotary encoder knobs, which click as they spin round and around.
       - my brother programmed a scrolling cityscape program
@@ -44,14 +44,23 @@ function Esp32DeskLedBoard() {
           - additionally, compiling the C++ program took a lot longer than I thought; I had to wait a minute or two for every little change I made.
           - also was not too happy with the pi because its boot time meant every time I turn on the led board, I'd have to wait a couple mintues for it to boot
             - the arduinon on the other hands starts up right away which is nice
-      - soon I learned about ESP-32 and tried one of those
+      - soon I learned about ESP32 and tried one of those
       - when I wired it up to my LED board and tried a program, I was really impressed
         - Despite not being an arduino-brand dev board, it's programmed precisely the same way as my arduino mega 2560
         - it ran the scrolling city-scape program extremely fast, hundreds of frames per second, just like the rasperry pi! 
           - while being as easy to use as the arduino, having vastly more memory, and was a lot cheaper at $6, and being physcially smaller
           - in addition to having wifi, so that made getting the time easy from the internet, and opened the door to a lot of cool possibilities
-        - so I was elated abot the esp-32, it's like an arduino on steriods -- that's how I usually describe it 
+        - so I was elated about the ESP32, it's like an arduino on steriods -- that's how I usually describe it 
         - so my arduino and pi zero returned to the drawers they came from 
+          - (the arduino later got used for my little timer project)
+      - one disadvantage of my ESP32 compared to the other boards I tried was that this had no mounting holes. I didn't know how I would attach it to the back of the board
+        - I tried 3d printing half of an ESP32 devboard case, gluing the case to the back of the board, and snapping the devboard into the case
+          - this was okay, but the jumper wires stuck out so far that it limited the angle at which I could have the LED board tilted
+        - looking at the hub75 connector, I realized that breadboard pin headers fit into it. 
+        - I soldered headers onto a prototyping board and it fit. then I soldered more headers, and connections between the wires, which was miserably tedious and difficult. 
+        - but this made it so I simply plug my esp32 dev board into my prototype board, then plug my prototype board into the hub75 panel. and it worked! And this looked so much neater than having all those wires everywhere
+        - at this time I also wanted to try designing a custom PCB. Since my prototype worked, I learned a bit of kicad, made the schematic, designed the PCB, and got it shipped.
+        - after getting the PCB, I soldered the pin headers, fit everything together, and it was great. It was nice to not have a lot of delicate wires hanging around.
       - 
     </div>
   );
