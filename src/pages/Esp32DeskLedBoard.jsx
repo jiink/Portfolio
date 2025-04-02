@@ -108,7 +108,75 @@ function Esp32DeskLedBoard() {
           - When I look at other LED board projects online, I think the visuals are usually kind of lame. I wanted mine to be impressive looking and have tasteful graphics and motion.
 
       the software
+      I want the software of this board to stand out over other LED board projects online. Unfortunatley, there hasn't been much effort beyond the bare-minimum placed here due to the electronic and mechanical challenges, and the fact that I've been working on other projects instead. However, there are a few things I'm happy with.
+      - There isn't just one thing the board can do. There are multiple programs - I call them "applets" - that can be switched easily.
+      - rather than picking an applet in a menu, one of the knobs lets you switch between them sequentially. It's like tuning between TV channels - I even added a brief TV noise effect between them.
+        - I think this is a lot more fun than a normal menu system, but it might need some adjustments once there are even more applets. 
+        - clicking that knob ought to switch it to app mode where its rotation would then control the applet, since some applets would benefit from two knobs, like a multplayer game. But that's not implemented right now.
+      - Development-wise, this was programmed not in the Arduino IDE, but using PlatformIO in Visual Studio Code. Just like how I discovered that ESP32 was 'like Arduino but way better', I found that PlatformIO was also 'like Arduino but way better'. It lets me make Arduino (or native) programs in the comforts of VSCode. Go check it out if you haven't heard of it!
+        - I'm happy with how the applet code is organized. [picture]
+        - An applet is just a cpp and h file with a setup and loop function defined. It can include "system.h" to consume inputs like knobs rotations and presses, and draw to the screen using the LED "matrix" class instance.
+        - Then, it's #included and added to a list in main.cpp and given a name. [picture]
+        - Finally, the knob indexes into that list to run whatever setup and loop function is there.
+        - Now that I look at it again, I might want to pass the matrix class, inputs, and delta time as an argument through the loop function so it looks more 'functional' and to make it more clear what's supposed to be done in that function.
+      - A few quips:
+        - The TV noise effect doesn't use a random number generator. I was inspired by (Metroid Prime's static texture effect)[https://www.thegamer.com/metroid-prime-dev-reveals-static-is-game-code/]! In my case it's completely unecessary, but I just wanted to try it out for fun.
+          ```cpp
+            char* programMemoryStart = (char*)esp_get_idf_version();
+            char* noiseSource = (char*)programMemoryStart;
+            ...
+            matrix->drawPixel(x, y, matrix->color333(*noiseSource, *noiseSource, *noiseSource));
+            noiseSource++;
+          ```
+        - To control the display and draw to it, I'm using the ["HUB75 RGB LED matrix panel library utilizing ESP32 DMA" by mrcodetastic](https://github.com/mrcodetastic/ESP32-HUB75-MatrixPanel-DMA).
+          - this is the most helpful and brilliant library powering this project. the readme has a lot of info that I couldn't get anywhere without.
+        - The rotary knobs are really frustrating to make work reliably. I thought it'd be easy. I tried my own solution and multiple libraries, and they all work fine enough, none of them work great - it's often missing clicks and stuff. 
+        - I'm thinking of moving this away from Arduino code and using Espressif's IDF SDK instead, to see what it's like and to have more control over stuff such as interrupts for the knobs.
+      - The applets:
+        - particle life
+          - I gave this one my full effort.
+          - I wanted my project to be something you could watch indefinitley, like a lava lamp. I was inspired ["How Particle Life emerges from simplicity" by Tom Mohr](https://www.youtube.com/watch?v=p4YirERTVF0)
+          - All these particles move around. Every so often it randomizes their behaviors and colors.
+            - Sometimes 'creatures' form and move around, chasing and attacking other creatures!
+            - Sometimes 'worms' appear and snake through
+            - Sometimes a merry-go-round forms
+            - Sometimes each group forms a 'black hole' and fight against each other, striking the other and destroying their form!
+            - Sometimes they do nothing and just arrange themselves into an interesting still image.
+            - All this variety is formed kind of particle is attracted or repelled from another kind.
+            - I followed along with the video, copying each concept into code.
+          - You can rotate the knob to adjust how many 'teams' are present.
+          - When the board is in this applet, it still serves as a clock, showing the date and time.
+            - I had some fun with making a neat design that shows only the hour as a number, with a progress bar for the hour's progress, a bar for the minute's progress, and a bar for the second's progress.
+          - some notes:
+            - I developed a good deal of this on the PC using a 'simulator' I made using Raylib. [picture]
+            - It was hard to make things wrap around seamlessly. Since this is such a small screen, wrapping around the edges was important. I wanted a 'creature' to be able to wrap around the border of the screen without falling apart. And now it does. Now just the pixel-drawing code doesn't wrap around seamlessly.
+            - Optimization was a challenge. Without doing anything special, each particle calculates forces from every other particle. That scales terribly. 
+              - To help, I split the field into a grid of 4x2 cells. Each cell knows which particles are in it. A particle in a given cell will only consider particles from neighboring cells that are in its circle of influence.
+                - It's a bit odd since once particle may be affected by another twice - once for its real positon, and again for its wrapped-around position.
+              - This optimzation is more effective than I expected. It stops working when all the particles clump together and the framerate drops, but that's okay.
+                - I thought about taking advantage of the ESP32's dual-core feature, but eh, that would be opening a can of worms here.
+            - It's crucial to draw a particle properly. 
+              - I started with rounding its position and plotting a pixel there. It looks terrible in motion - it suddenly jumps from pixel-to-pixel.
+              - I made it smooth by considering a particle as a pixel-sized square somewhere between actual pixels, and lighting up each pixel it covers in proportion to the area of that particle's square in each pixel.
+                - It's so much better! now when the particles move, they look very smooth. It makes my 64x32 pixel screen feel a lot bigger.
+                  - because it's simple to implement and makes a big difference. when I see other electronics projects, sometimes that bugs me now. Like (this Pendant)[https://www.youtube.com/watch?v=jis1MC5Tm8k]
+                - it's not perfect - when a particle moves, it appears overall a bit darker when it's between pixels. Maybe some sort of brightness correction would help.
+                - I had to make it so when drawing a particle, its colors are added to the pixels already there, rather than averaged or replaced. This made it so when mutliple particles come together and overlap, the spot gets brighter. It's a cool effect!
+            - I want to add some way to save, retrieve, and edit the attraction tables. That way, I could summon a cool worm without just waiting for it to happen randomly.
+            - all together, I acheived my goal with this applet well - it's cool to watch. sometimes from the corner of my eye I see something crazy going on in it. 
+            - there's one big problem that I just can't figure out. Over time, it degrades, corrupts itself, and eventually crashes the whole system! 
+              [video]
+              - As it's running, after maybe half an hour, I notice that there's a couple particles that are the wrong color - ones that don't belong! 
+              - These ones begin zipping around randomly.
+              - Some particles begin to clump into the four corners. 
+              - As time continues, more and more of these particles become bizarre like this, and it can't be fixed without a reset. I could turn the knob to set them all to one color, and I'd see many start flashing different colors on their own and zipping around.
+              - It's so weird and pretty funny. But it kinda ruins it. I'd like to fix it so I can have it running continually.
+              - I'd think it's a memory leak, but everything is statically initialized! No mallocs or class instantiations happen in that code at all. 
+              - Particles are likely somehow getting their position, velocity, and color from somewhere in junk memory. I'm just not sure how! 
+              - This is frustrating to debug because the problem might only crop up after an hour of running. 
+              - Let me know if you have any ideas.
       
+
     </div>
   );
 }
