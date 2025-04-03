@@ -15,7 +15,7 @@ function Esp32DeskLedBoard() {
       - esp32 
 
       the journey
-      - first, with a hub75 panel, I tried driving it with an arduino mega 2560
+      - first, with a hub75 panel, I tried driving it with an arduino mega 2560. in fact, that's why this project is called "Mega Malachite" - "Mega" referred to the devboard it uses and Malachite referred to the copper-blue color of the Mega's PCB.
       - putting graphics on the panel worked fine
       - one goal was to make this not look like some makeshift, delicate device with exposed wires and pieces hanging around
       - attached the arduino to the back of the panel by screwing it into a piece of cardboard
@@ -175,7 +175,45 @@ function Esp32DeskLedBoard() {
               - Particles are likely somehow getting their position, velocity, and color from somewhere in junk memory. I'm just not sure how! 
               - This is frustrating to debug because the problem might only crop up after an hour of running. 
               - Let me know if you have any ideas.
+        - weather channel
+          - this one is only half-complete
+          - The idea is, when you go here, it uses some cool animations to show you the dominant weather condition of the day and the high temperature
+          - The design is based off the Egg TV from the "Weather Globe" boss from Sonic Mania. [video]
+          - The spinning sign is supposed to serve as a loading animation, and once the forecast is retrieved from the internet, it's supposed to stop spinning, reveal the weather icon, show the top temperature, and play a fitting animation like in the Sonic game. 
+          - Currently, it does show real weather data. there's only an icon for sunny weather though, and the graphics are misaligned, and it doesn't have all the animations I wanted implemented.
+          - Getting the real weather data was a challenge. I was looking hard for an easy way to do it without any API keys. After a while, I found one! 
+            - It's called Open Meteo.
+            - On their site you can design a query and get a long URL to use. Here's the one I generated:
+            https://api.open-meteo.com/v1/forecast?latitude=33.88&longitude=-117.89&hourly=weather_code&daily=temperature_2m_max&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America/Los_Angeles&forecast_days=1
+            - Here's what that returns as of today:
+              ```
+              {"latitude":33.877834,"longitude":-117.885056,"generationtime_ms":0.05829334259033203,"utc_offset_seconds":-25200,"timezone":"America/Los_Angeles","timezone_abbreviation":"GMT-7","elevation":74.0,"hourly_units":{"time":"iso8601","weather_code":"wmo code"},"hourly":{"time":["2025-04-02T00:00","2025-04-02T01:00","2025-04-02T02:00","2025-04-02T03:00","2025-04-02T04:00","2025-04-02T05:00","2025-04-02T06:00","2025-04-02T07:00","2025-04-02T08:00","2025-04-02T09:00","2025-04-02T10:00","2025-04-02T11:00","2025-04-02T12:00","2025-04-02T13:00","2025-04-02T14:00","2025-04-02T15:00","2025-04-02T16:00","2025-04-02T17:00","2025-04-02T18:00","2025-04-02T19:00","2025-04-02T20:00","2025-04-02T21:00","2025-04-02T22:00","2025-04-02T23:00"],"weather_code":[0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,3,0,0,0,0,0,0,0]},"daily_units":{"time":"iso8601","temperature_2m_max":"°F"},"daily":{"time":["2025-04-02"],"temperature_2m_max":[67.1]}}
+              ```
+            - from there, I extract the max temperature using ArduinoJson.
+            - See the weather_code list? Those are the weather codes for every hour. I learned that weather codes are numbers that indicate if it will be cloudy, sunny, rainy, and like 50 others. For instance, 0 means it's a clear sky. Looking at (a table of them)[https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM], I was surprised how specific and descriptive each code was. 
+              - To represent the entire day with one weather icon, I could simply find the number that appears the most frequently in the daylight hours and then convert it to a simpler weather condition that I have an icon/animation for. I'm sure there's a better way, but this is fine enough.
+            - I want to be careful to not poll that free online service too frequently with my microcontroller code. Right now it only polls it once every 24 hours.
+        - settings channel
+          - without a normal menu system, I wasn't sure how I would handle settings. then I realized that it can just be one of the applets.
+          - this is where I can change the brightness of the display.
+          - soon, instead of hard-coding my wifi credentials into the source code, I want to be able to set them here.
+          - I do want to put some effort into making this look neat, but right now it's just some sloppy text.
+        - cityscape
+          - this one is just a few bitmaps layered on top of each other, making a parallax effect. The speed of the scrolling can be adjusted by twisting the knob.
+          - I kind of want to make a 3d version of this using raymarching. I wonder how it would perform.
+          - I noticed that if the LED board has been on for a while, the scrolling gets choppy. I wondered how the performance got worse, then I realized it didn't. It's just that the scrolling is a function of time in seconds, as a floating point number. As days' worth of seconds had passed, floating point became imprecise. This is like how going far away in video games causes all the graphics to get choppy.
+
+      - problems:
+        - the display shows this weird artifacting. it's bizarre and I don't know the cause of it.
+          - usually it just affects the upper left quadrant, fringing its pixels and/or offsetting them and/or ruining their colors.
+          - in some cases it can show up in other parts of the display
+          - the effect is most prominent at the highest brightness setting. and is nearly gone at the lowest brightness setting.
+          - the effect changes when I touch any wires or metal connected to the ESP32 with my hands, even the insulated parts. 
+          - the effect has some cases where it doesn't show up at all - like when the display just shows some sparse lit pixels (like in particle like or the basic clock applet)
+          - the effect depends on what pixels are lit up at the borders (I can see this in my timer applet)
+          - it's kind of dissapointing, but not a dealbreaker, I can work around it I suppose
       
+        
 
     </div>
   );
