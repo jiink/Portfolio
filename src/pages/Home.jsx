@@ -21,6 +21,10 @@ function Home() {
         <h3>ESP32 Desk LED Board</h3>
         <img className='thumbnail' src="./src/assets/led-board-thumb.jpg" alt="ESP32 Desk LED Board" />
       </div>
+      <div className="project-card" onClick={() => window.location.href = '/projects/incrediplotter'}>
+        <h3>The Incrediplotter</h3>
+        <img className='thumbnail' src="./src/assets/led-board-thumb.jpg" alt="The Incrediplotter" />
+      </div>
       <p>More project writeups are coming soon.</p>
       <p>
         Is there something in particular I've worked on that you'd like me to write a post on? Please let me know!
