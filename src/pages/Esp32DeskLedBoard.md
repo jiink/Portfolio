@@ -176,7 +176,7 @@ Finally, the knob indexes into that list to run whatever setup and loop function
 But now that I look at it again, I might want to pass the matrix class, inputs, and delta time as an argument through the loop function so it looks more 'functional' and to make it more clear what's supposed to be done in that function.
 
 A few notes:
-  - The TV noise effect doesn't use a random number generator. I was inspired by (Metroid Prime's static texture effect)[https://www.thegamer.com/metroid-prime-dev-reveals-static-is-game-code/]! In my case it's completely unecessary, but I just wanted to try it out for fun.
+  - The TV noise effect doesn't use a random number generator. I was inspired by [Metroid Prime's static texture effect](https://www.thegamer.com/metroid-prime-dev-reveals-static-is-game-code/)! In my case it's completely unecessary, but I just wanted to try it out for fun.
     ```cpp
       char* programMemoryStart = (char*)esp_get_idf_version();
       char* noiseSource = (char*)programMemoryStart;
@@ -191,7 +191,7 @@ A few notes:
 
 ## 5.1. The applets
 
-## 5.1.1. Particle life
+### 5.1.1. Particle life
 
 This is the one applet so far that I gave my full effort towards.
 
@@ -218,46 +218,64 @@ Some notes:
   - It was hard to make things wrap around seamlessly. Since this is such a small screen, wrapping around the edges was important. I wanted a 'creature' to be able to wrap around the border of the screen without falling apart. And now it does. Now just the pixel-drawing code doesn't wrap around seamlessly.
   - Optimization was a challenge. Without doing anything special, each particle calculates forces from every other particle. That scales terribly. To help, I split the field into a grid of 4x2 cells. Each cell knows which particles are in it. A particle in a given cell will only consider particles from neighboring cells that are in its circle of influence. This optimzation is more effective than I expected. It stops working when all the particles clump together and the framerate drops, but that's okay. I considered taking advantage of the ESP32's dual-core feature, but eh, that would be opening a can of worms here.
     - It's a bit odd since once particle may be affected by another twice - once for its real positon, and again for its wrapped-around position.
-    
-  - It's crucial to draw a particle properly. 
-    - I started with rounding its position and plotting a pixel there. It looks terrible in motion - it suddenly jumps from pixel-to-pixel.
-    - I made it smooth by considering a particle as a pixel-sized square somewhere between actual pixels, and lighting up each pixel it covers in proportion to the area of that particle's square in each pixel.
-      - It's so much better! now when the particles move, they look very smooth. It makes my 64x32 pixel screen feel a lot bigger.
-        - because it's simple to implement and makes a big difference. when I see other electronics projects, sometimes that bugs me now. Like (this Pendant)[https://www.youtube.com/watch?v=jis1MC5Tm8k]
-      - it's not perfect - when a particle moves, it appears overall a bit darker when it's between pixels. Maybe some sort of brightness correction would help.
-      - I had to make it so when drawing a particle, its colors are added to the pixels already there, rather than averaged or replaced. This made it so when mutliple particles come together and overlap, the spot gets brighter. It's a cool effect!
-  - I want to add some way to save, retrieve, and edit the attraction tables. That way, I could summon a cool worm without just waiting for it to happen randomly.
-  - all together, I acheived my goal with this applet well - it's cool to watch. sometimes from the corner of my eye I see something crazy going on in it. 
-  - there's one big problem that I just can't figure out. Over time, it degrades, corrupts itself, and eventually crashes the whole system! 
-    [video]
-    - As it's running, after maybe half an hour, I notice that there's a couple particles that are the wrong color - ones that don't belong! 
-    - These ones begin zipping around randomly.
-    - Some particles begin to clump into the four corners. 
-    - As time continues, more and more of these particles become bizarre like this, and it can't be fixed without a reset. I could turn the knob to set them all to one color, and I'd see many start flashing different colors on their own and zipping around.
-        - It's so weird and pretty funny. But it kinda ruins it. I'd like to fix it so I can have it running continually.
-        - I'd think it's a memory leak, but everything is statically initialized! No mallocs or class instantiations happen in that code at all. 
-        - Particles are likely somehow getting their position, velocity, and color from somewhere in junk memory. I'm just not sure how! 
-        - This is frustrating to debug because the problem might only crop up after an hour of running. 
-        - Let me know if you have any ideas.
-  - weather channel
-    - this one is only half-complete
-    - The idea is, when you go here, it uses some cool animations to show you the dominant weather condition of the day and the high temperature
-    - The design is based off the Egg TV from the "Weather Globe" boss from Sonic Mania. [video]
-    - The spinning sign is supposed to serve as a loading animation, and once the forecast is retrieved from the internet, it's supposed to stop spinning, reveal the weather icon, show the top temperature, and play a fitting animation like in the Sonic game. 
-    - Currently, it does show real weather data. there's only an icon for sunny weather though, and the graphics are misaligned, and it doesn't have all the animations I wanted implemented.
-    - Getting the real weather data was a challenge. I was looking hard for an easy way to do it without any API keys. After a while, I found one! 
-      - It's called Open Meteo.
-      - On their site you can design a query and get a long URL to use. Here's the one I generated:
-      https://api.open-meteo.com/v1/forecast?latitude=33.88&longitude=-117.89&hourly=weather_code&daily=temperature_2m_max&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America/Los_Angeles&forecast_days=1
-      - Here's what that returns as of today:
-        ```
-        {"latitude":33.877834,"longitude":-117.885056,"generationtime_ms":0.05829334259033203,"utc_offset_seconds":-25200,"timezone":"America/Los_Angeles","timezone_abbreviation":"GMT-7","elevation":74.0,"hourly_units":{"time":"iso8601","weather_code":"wmo code"},"hourly":{"time":["2025-04-02T00:00","2025-04-02T01:00","2025-04-02T02:00","2025-04-02T03:00","2025-04-02T04:00","2025-04-02T05:00","2025-04-02T06:00","2025-04-02T07:00","2025-04-02T08:00","2025-04-02T09:00","2025-04-02T10:00","2025-04-02T11:00","2025-04-02T12:00","2025-04-02T13:00","2025-04-02T14:00","2025-04-02T15:00","2025-04-02T16:00","2025-04-02T17:00","2025-04-02T18:00","2025-04-02T19:00","2025-04-02T20:00","2025-04-02T21:00","2025-04-02T22:00","2025-04-02T23:00"],"weather_code":[0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,3,0,0,0,0,0,0,0]},"daily_units":{"time":"iso8601","temperature_2m_max":"°F"},"daily":{"time":["2025-04-02"],"temperature_2m_max":[67.1]}}
-        ```
-      - from there, I extract the max temperature using ArduinoJson.
-      - See the weather_code list? Those are the weather codes for every hour. I learned that weather codes are numbers that indicate if it will be cloudy, sunny, rainy, and like 50 others. For instance, 0 means it's a clear sky. Looking at (a table of them)[https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM], I was surprised how specific and descriptive each code was. 
-        - To represent the entire day with one weather icon, I could simply find the number that appears the most frequently in the daylight hours and then convert it to a simpler weather condition that I have an icon/animation for. I'm sure there's a better way, but this is fine enough.
-      - I want to be careful to not poll that free online service too frequently with my microcontroller code. Right now it only polls it once every 24 hours.
-  - settings channel
+
+It's crucial to draw a particle properly. I started with rounding its position and plotting a pixel there, but it looks terrible in motion -- it suddenly jumps from pixel to pixel.
+
+I made it smooth by considering a particle as a pixel-sized square somewhere between actual pixels, and lighting up each pixel it covers in proportion to the area of that particle's square in each pixel. It's so much better! Now when the particles move, they look very smooth. It makes my 64x32 pixel screen feel a lot bigger. Because it's simple to implement and makes a big difference, when I see other electronics projects, sometimes that bugs me now. For instance, I think (this Pendant)[https://www.youtube.com/watch?v=jis1MC5Tm8k] would look better if it used a similar technique.
+
+My point-drawing algorithm isn't perfect though: A particle appears a bit darker overall when it's between pixels. This causes a slight shimmer as a particle moves, especially diagonally. Maybe some sort of brightness correction would help. It would also be more technically correct to consider the point as a little circle rather than a little square.
+
+I had to make it so when drawing a particle, its colors are added to the pixels already there, rather than averaged or replaced. This made it so when mutliple particles come together and overlap, the spot gets brighter. It's a cool effect!
+
+In the future I want to add some way to save, retrieve, and edit the attraction tables that define how different particle types attract/repel from each other. That way, I could summon a cool worm without just waiting for it to happen randomly.
+
+all together, I acheived my goal with this particular applet -- it's cool to watch! Sometimes there is something really interesting happening on it.
+
+But there's one big problem that I just can't figure out:
+
+Over time, it degrades, corrupts itself, and eventually crashes the whole system! 
+
+[video]
+
+As it's running, after maybe half an hour, I notice that there's a couple particles that are the wrong color - ones that don't belong! These eventually begin zipping around randomly. Some particles also begin to clump into the four corners. As time continues, more and more of these particles become bizarre like this, and it can't be fixed without a reset. I could turn the knob to set them all to one color, and I'd see many start flashing different colors on their own and zipping around.
+
+It's so weird and kinda funny. But it also kinda ruins it. I'd like to fix it so I can have it running continually. I'd think it's a memory leak, but everything is statically initialized! No mallocs or class instantiations happen in that code.
+
+Particles are likely somehow getting their position, velocity, and color from somewhere in junk memory. I'm just not sure how! This is frustrating to debug because the problem might only crop up after an hour of running. 
+
+If someone out there know what's up with that, let me know!
+
+### 5.1.2. Weather channel
+
+This one is only half-complete.
+
+The idea is, when you go here, it uses some cool animations to show you the dominant weather condition of the day and the high temperature.
+
+The design is based off the Egg TV from the "Weather Globe" boss that appears in Sonic Mania. [video]
+
+The spinning sign is supposed to serve as a loading animation, and once the forecast is retrieved from the internet, it's supposed to stop spinning, reveal the weather icon, show the top temperature, and play a fitting animation like in the Sonic game. 
+
+Currently, it does show real weather data. there's only an icon for sunny weather though, and the graphics are misaligned, and it doesn't have all the animations I wanted implemented.
+
+Getting the real weather data was a challenge. I was looking hard for an easy way to do it without any API keys. After a while, I found one! It's called Open Meteo. On their site you can design a query and get a long URL to use. Here's the one I generated:
+
+https://api.open-meteo.com/v1/forecast?latitude=33.88&longitude=-117.89&hourly=weather_code&daily=temperature_2m_max&temperature_unit=fahrenheit&wind_speed_unit=mph&precipitation_unit=inch&timezone=America/Los_Angeles&forecast_days=1
+
+Here's what that returns as of today:
+
+```
+{"latitude":33.877834,"longitude":-117.885056,"generationtime_ms":0.05829334259033203,"utc_offset_seconds":-25200,"timezone":"America/Los_Angeles","timezone_abbreviation":"GMT-7","elevation":74.0,"hourly_units":{"time":"iso8601","weather_code":"wmo code"},"hourly":{"time":["2025-04-02T00:00","2025-04-02T01:00","2025-04-02T02:00","2025-04-02T03:00","2025-04-02T04:00","2025-04-02T05:00","2025-04-02T06:00","2025-04-02T07:00","2025-04-02T08:00","2025-04-02T09:00","2025-04-02T10:00","2025-04-02T11:00","2025-04-02T12:00","2025-04-02T13:00","2025-04-02T14:00","2025-04-02T15:00","2025-04-02T16:00","2025-04-02T17:00","2025-04-02T18:00","2025-04-02T19:00","2025-04-02T20:00","2025-04-02T21:00","2025-04-02T22:00","2025-04-02T23:00"],"weather_code":[0,0,0,1,0,0,0,0,0,0,0,1,1,1,1,1,3,0,0,0,0,0,0,0]},"daily_units":{"time":"iso8601","temperature_2m_max":"°F"},"daily":{"time":["2025-04-02"],"temperature_2m_max":[67.1]}}
+```
+
+From there, I extract the max temperature using ArduinoJson.
+
+See the `weather_code` list? Those are the weather codes for every hour. I learned that weather codes are numbers that indicate if it will be cloudy, sunny, rainy, and like 50 other conditions. For instance, `0` means it's a clear sky. Looking at [a table of them](https://www.nodc.noaa.gov/archive/arc0021/0002199/1.1/data/0-data/HTML/WMO-CODE/WMO4677.HTM), I was surprised how specific and descriptive each code was. 
+
+To represent the entire day with one weather icon, I could simply find the number that appears the most frequently in the daylight hours and then convert it to a simpler weather condition that I have an icon/animation for. I'm sure there's a better way, but this is fine enough.
+
+I want to be careful to not poll that free online service too frequently with my microcontroller code. Right now it only polls at a maximum of once every 24 hours.
+
+### 5.1.3. Settings channel
     - without a normal menu system, I wasn't sure how I would handle settings. then I realized that it can just be one of the applets.
     - this is where I can change the brightness of the display.
     - soon, instead of hard-coding my wifi credentials into the source code, I want to be able to set them here.
