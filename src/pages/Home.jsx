@@ -18,17 +18,22 @@ function Home() {
       <div className="project-card" onClick={() => window.location.href = '/projects/esp32-desk-led-board'}>
         <h3 className="project-card-title">ESP32 Desk LED Board</h3>
         <p className="project-card-subtitle">interactable display of time, weather, and art</p>
-        <img className='thumbnail' src="./src/assets/led-board-thumb.jpg" alt="ESP32 Desk LED Board" />
+        <img className='thumbnail' src="./src/assets/led-board-thumb.jpg" />
       </div>
       <div className="project-card" onClick={() => window.location.href = '/projects/incrediplotter'}>
         <h3 className='project-card-title'>The Incrediplotter</h3>
         <p className="project-card-subtitle">it can draw anything you tell it to</p>
-        <img className='thumbnail' src="./src/assets/incrediplotter-thumb.jpg" alt="The Incrediplotter" />
+        <img className='thumbnail' src="./src/assets/incrediplotter-thumb.jpg" />
       </div>
-      <div className="project-card">
+      <div className="project-card-disabled">
         <h3 className='project-card-title'>Strodelo</h3>
         <p className="project-card-subtitle">view any CAD model in MR</p>
-        <img className='thumbnail' src="./src/assets/incrediplotter-thumb.jpg" alt="The Incrediplotter" />
+        <img className='thumbnail' src="./src/assets/strodelo-thumb.jpg" />
+      </div>
+      <div className="project-card" onClick={() => window.location.href = 'https://modrinth.com/mod/disposable-furnaces'}>
+        <h3 className='project-card-title'>Disposable Furnaces</h3>
+        <p className="project-card-subtitle">Minecraft mod; quick smelting for the hurried traveler</p>
+        <img className='thumbnail' src="./src/assets/disposable-furnaces-thumb.jpg" />
       </div>
       <p>There are more writeups I would like to make in the future.</p>
       <p>

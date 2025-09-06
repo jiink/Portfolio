@@ -105,6 +105,32 @@ img, video {
   border-bottom-width: 4px;
 }
 
+.project-card-disabled {
+  border-radius: 8px;
+  border: 2px solid #444a52;
+  background: repeating-linear-gradient(
+    135deg,
+    #23272f 0px,
+    #23272f 10px,
+    #2d3748 10px,
+    #2d3748 20px
+  );
+  margin: 1.5em 0;
+  box-shadow: 0 2px 6px #181c20, 0 1px 0 #222a33 inset;
+  padding: 1em 2em;
+  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
+  cursor: not-allowed;
+  color: #a0a4aa;
+  font-weight: 500;
+  text-shadow: none;
+  outline: none;
+  border-bottom-width: 4px;
+  opacity: 0.6;
+  position: relative;
+  pointer-events: none;
+}
+
+
 .project-card:hover,
 .project-card:focus {
   border-color: #33ff70;
