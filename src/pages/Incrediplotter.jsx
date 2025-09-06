@@ -27,6 +27,16 @@ import incrediplotter25 from '../assets/incrediplotter/incrediplotter-25.jpg';
 import incrediplotter26 from '../assets/incrediplotter/incrediplotter-26.jpg';
 import incrediplotter27 from '../assets/incrediplotter/incrediplotter-27.jpg';
 import incrediplotter28 from '../assets/incrediplotter/incrediplotter-28.jpg';
+import incrediplotter29 from '../assets/incrediplotter/incrediplotter-29.jpg';
+import incrediplotter30 from '../assets/incrediplotter/incrediplotter-30.jpg';
+import incrediplotter31 from '../assets/incrediplotter/incrediplotter-31.jpg';
+import incrediplotter32 from '../assets/incrediplotter/incrediplotter-32.jpg';
+import incrediplotter33 from '../assets/incrediplotter/incrediplotter-33.jpg';
+import incrediplotter29_hires from '../assets/incrediplotter/incrediplotter-29-hires.jpg';
+import incrediplotter30_hires from '../assets/incrediplotter/incrediplotter-30-hires.jpg';
+import incrediplotter31_hires from '../assets/incrediplotter/incrediplotter-31-hires.jpg';
+import incrediplotter32_hires from '../assets/incrediplotter/incrediplotter-32-hires.jpg';
+import incrediplotter33_hires from '../assets/incrediplotter/incrediplotter-33-hires.jpg';
 
 const code1 = `[stepper_x]
 step_pin: PA1
@@ -51,9 +61,10 @@ function Incrediplotter() {
       <h1>The Incrediplotter</h1>
       <p>Last edit: September 2025</p>
       <h2>YouTube video</h2>
-      <iframe width="100%" height="400"
+      <iframe width="100%" height="400" allow="fullscreen;"
       src="https://www.youtube.com/embed/jlRw-0B5N8U">
       </iframe>
+
       <h3>The following is pretty much a transcription of the above YouTube video with a few screenshots thrown in.</h3>
       <br></br>
       <img src={incrediplotter1}/>
@@ -228,7 +239,31 @@ function Incrediplotter() {
       <img src={incrediplotter28}/>
       <br/><br/>
       But in the end, I am pretty happy with how this turned out. It's a weird feeling to put together a machine that can draw anything you tell it to and get... the problem is I just don't know what to tell it to draw. I don't really have any good ideas. But I did learn a lot of cool stuff making this, so I think it was well worth it.
-      <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+      <br></br>
+      <br></br>
+      <h2>More pictures</h2>
+      <p>The images below can be clicked to view a full-res version.</p>
+      <br></br>
+      <a href={incrediplotter29_hires} target="_blank">
+        <img src={incrediplotter29} alt="Description of incrediplotter29"/>
+      </a>
+      <br/>
+      <a href={incrediplotter30_hires} target="_blank">
+        <img src={incrediplotter30} alt="Description of incrediplotter30"/>
+      </a>
+      <br/>
+      <a href={incrediplotter31_hires} target="_blank">
+        <img src={incrediplotter31} alt="Description of incrediplotter31"/>
+      </a>
+      <br/>
+      <a href={incrediplotter32_hires} target="_blank">
+        <img src={incrediplotter32} alt="Description of incrediplotter32"/>
+      </a>
+      <br/>
+      <a href={incrediplotter33_hires} target="_blank">
+        <img src={incrediplotter33} alt="Description of incrediplotter33"/>
+      </a>
+      <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
     </div>
   );
 }
