@@ -86,7 +86,9 @@ img, video {
   height: 100px;
   object-fit: cover;
   border-radius: 8px;
+  margin-top: 10px;
 }
+
 .project-card {
   border-radius: 8px;
   border: 2px solid #757f8d;
@@ -108,4 +110,16 @@ img, video {
   border-color: #33ff70;
   background: linear-gradient(180deg, #283046 0%, #3a506b 100%);
   box-shadow: 0 4px 12px #3399ff44, 0 1px 0 #222a33 inset;
+}
+
+.project-card-title {
+  margin: 0;
+}
+
+.project-card-subtitle {
+  text-align: center;
+  font-weight: 100;
+  font-size: 80%;
+  margin-bottom: 0;
+  margin-top: 0;
 }

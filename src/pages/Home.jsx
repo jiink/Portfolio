@@ -15,14 +15,19 @@ function Home() {
         and I like it when there's a tangible effect.
         I also think it's a really fun challenge to work around limited computing resources.
       </p>
-      <h2>Personal projects</h2>
-      <p>I've done these things for fun:</p>
       <div className="project-card" onClick={() => window.location.href = '/projects/esp32-desk-led-board'}>
-        <h3>ESP32 Desk LED Board</h3>
+        <h3 className="project-card-title">ESP32 Desk LED Board</h3>
+        <p className="project-card-subtitle">interactable display of time, weather, and art</p>
         <img className='thumbnail' src="./src/assets/led-board-thumb.jpg" alt="ESP32 Desk LED Board" />
       </div>
       <div className="project-card" onClick={() => window.location.href = '/projects/incrediplotter'}>
-        <h3>The Incrediplotter</h3>
+        <h3 className='project-card-title'>The Incrediplotter</h3>
+        <p className="project-card-subtitle">it can draw anything you tell it to</p>
+        <img className='thumbnail' src="./src/assets/incrediplotter-thumb.jpg" alt="The Incrediplotter" />
+      </div>
+      <div className="project-card">
+        <h3 className='project-card-title'>Strodelo</h3>
+        <p className="project-card-subtitle">view any CAD model in MR</p>
         <img className='thumbnail' src="./src/assets/incrediplotter-thumb.jpg" alt="The Incrediplotter" />
       </div>
       <p>There are more writeups I would like to make in the future.</p>

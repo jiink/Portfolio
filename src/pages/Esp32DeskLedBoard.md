@@ -283,7 +283,7 @@ Forfeiting a normal menu system, I wasn't sure how I would give myself a way to 
 
 Eventually I do want to put some effort into making this look neat; right now it's just some sloppy text.
 
-### 5.1.4. cityscape
+### 5.1.4. Cityscape
 
 This one is just a few bitmaps layered on top of each other, making a parallax effect. The speed of the scrolling can be adjusted by twisting a knob. I kind of want to make a 3d version of this using raymarching. I wonder how it would perform.
 
