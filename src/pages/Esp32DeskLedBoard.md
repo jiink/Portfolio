@@ -1,5 +1,7 @@
 # "Mega Malachite" — an ESP32 Desk LED Board
+
 ## 1. Why?
+
 Some years ago, I tore apart my old nightstand clock to control the RGB backlight inside with an Arduino. It was too hard, and a bit too scary with mains voltage in there. I couldn't put it back together, so I threw it away! But instead of getting a new clock, I wanted to make my own.
 
 I wanted to make a super cool clock. I also wanted it to be a decorative object that's interesting to watch, in the same manner as a lava lamp, aquarium, or ant farm. 
@@ -276,23 +278,43 @@ To represent the entire day with one weather icon, I could simply find the numbe
 I want to be careful to not poll that free online service too frequently with my microcontroller code. Right now it only polls at a maximum of once every 24 hours.
 
 ### 5.1.3. Settings channel
-    - without a normal menu system, I wasn't sure how I would handle settings. then I realized that it can just be one of the applets.
-    - this is where I can change the brightness of the display.
-    - soon, instead of hard-coding my wifi credentials into the source code, I want to be able to set them here.
-    - I do want to put some effort into making this look neat, but right now it's just some sloppy text.
-  - cityscape
-    - this one is just a few bitmaps layered on top of each other, making a parallax effect. The speed of the scrolling can be adjusted by twisting the knob.
-    - I kind of want to make a 3d version of this using raymarching. I wonder how it would perform.
-    - I noticed that if the LED board has been on for a while, the scrolling gets choppy. I wondered how the performance got worse, then I realized it didn't. It's just that the scrolling is a function of time in seconds, as a floating point number. As days' worth of seconds had passed, floating point became imprecise. This is like how going far away in video games causes all the graphics to get choppy.
 
-- problems:
-  - the display shows this weird artifacting. it's bizarre and I don't know the cause of it.
-    - usually it just affects the upper left quadrant, fringing its pixels and/or offsetting them and/or ruining their colors.
-    - in some cases it can show up in other parts of the display
-    - the effect is most prominent at the highest brightness setting. and is nearly gone at the lowest brightness setting.
-    - the effect changes when I touch any wires or metal connected to the ESP32 with my hands, even the insulated parts. 
-    - the effect has some cases where it doesn't show up at all - like when the display just shows some sparse lit pixels (like in particle like or the basic clock applet)
-    - the effect depends on what pixels are lit up at the borders (I can see this in my timer applet)
-    - it's kind of dissapointing, but not a dealbreaker, I can work around it I suppose.
-    - Now I am wondering if it's due to the ESP's IO voltage being 3.3 V while the LEDs are powered by 5 V.
+Forfeiting a normal menu system, I wasn't sure how I would give myself a way to change system settings (e.g. the brightness of the display). Then I realized that it can just be one of the applets. Soon, instead of hard-coding my wifi credentials into the source code, I want to be able to set them here too.
 
+Eventually I do want to put some effort into making this look neat; right now it's just some sloppy text.
+
+### 5.1.4. cityscape
+
+This one is just a few bitmaps layered on top of each other, making a parallax effect. The speed of the scrolling can be adjusted by twisting a knob. I kind of want to make a 3d version of this using raymarching. I wonder how it would perform.
+
+I noticed that if the LED board has been on for a while, the scrolling gets choppy. I discovered the framerate isn't getting worse, it's just that the scrolling is a function of time in seconds, as a float. As days' worth of seconds had passed, floating point became imprecise.
+
+## 6. Problems that got me stumped
+
+I have no idea how to solve the following problems with this thing.
+
+### 6.1. Display artifacting
+
+The display shows this weird artifacting. Usually it just affects the upper left quadrant, fringing its pixels and/or offsetting them and/or ruining their colors.
+
+In some cases it can show up in other parts of the display. The effect is most prominent at the highest brightness setting, and is nearly gone at the lowest brightness setting. The effect changes when I touch any wires or metal connected to the ESP32 with my hands, even the insulated parts. 
+
+The effect has some cases where it doesn't show up at all -- like when the display just shows some sparse lit pixels (in Particle Life or the basic clock applet)
+
+In my timer applet I can see how lighting pixels on the border causes this problem to appear. 
+
+It's kind of dissapointing, but not a dealbreaker, I can work around it I suppose.
+
+Now I am wondering if it's due to the ESP's IO voltage being 3.3 V while the LEDs are powered by 5 V.
+
+### 6.2. Knob reliability
+
+Turning the right knob is no problem. Turning the left knob causes the system to think the right knob turned half the time. This makes using the device very frustrating.
+
+Clicking either of the knobs seems to make the microcontroller reset. Why! It didn't always do that! This also ruins a lot of possibilities.
+
+## 7. WIP New software
+
+I have been making new software that uses ESP-IDF. My code is using FreeRTOS, more C++ features, and my very own [drawing library I call JaDraw](https://github.com/jiink/JaDraw)! With this new stuff, I have been able to write and test applets on my PC that use. Deploying them to my LED board is as simple as copy-pasting a C++ class file, even for applets that use inputs, wall-clock time, and more; I'm pretty happy with that.
+
+With this I will make cooler software and show more when that's ready.
