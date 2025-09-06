@@ -1,15 +1,45 @@
 import React from 'react';
+import incrediplotter1 from '../assets/incrediplotter/incrediplotter-1.jpg';
+import incrediplotter2 from '../assets/incrediplotter/incrediplotter-2.jpg';
+import incrediplotter3 from '../assets/incrediplotter/incrediplotter-3.jpg';
+import incrediplotter4 from '../assets/incrediplotter/incrediplotter-4.jpg';
+import incrediplotter5 from '../assets/incrediplotter/incrediplotter-5.jpg';
+import incrediplotter6 from '../assets/incrediplotter/incrediplotter-6.jpg';
+import incrediplotter7 from '../assets/incrediplotter/incrediplotter-7.jpg';
+import incrediplotter8 from '../assets/incrediplotter/incrediplotter-8.jpg';
+import incrediplotter9 from '../assets/incrediplotter/incrediplotter-9.jpg';
+import incrediplotter10 from '../assets/incrediplotter/incrediplotter-10.jpg';
+import incrediplotter11 from '../assets/incrediplotter/incrediplotter-11.jpg';
+import incrediplotter12 from '../assets/incrediplotter/incrediplotter-12.jpg';
+import incrediplotter13 from '../assets/incrediplotter/incrediplotter-13.jpg';
+import incrediplotter14 from '../assets/incrediplotter/incrediplotter-14.jpg';
+import incrediplotter15 from '../assets/incrediplotter/incrediplotter-15.jpg';
+import incrediplotter16 from '../assets/incrediplotter/incrediplotter-16.jpg';
+import incrediplotter17 from '../assets/incrediplotter/incrediplotter-17.jpg';
+import incrediplotter18 from '../assets/incrediplotter/incrediplotter-18.jpg';
+import incrediplotter19 from '../assets/incrediplotter/incrediplotter-19.jpg';
+import incrediplotter20 from '../assets/incrediplotter/incrediplotter-20.jpg';
+import incrediplotter21 from '../assets/incrediplotter/incrediplotter-21.jpg';
+import incrediplotter22 from '../assets/incrediplotter/incrediplotter-22.jpg';
+import incrediplotter23 from '../assets/incrediplotter/incrediplotter-23.jpg';
+import incrediplotter24 from '../assets/incrediplotter/incrediplotter-24.jpg';
+import incrediplotter25 from '../assets/incrediplotter/incrediplotter-25.jpg';
+import incrediplotter26 from '../assets/incrediplotter/incrediplotter-26.jpg';
+import incrediplotter27 from '../assets/incrediplotter/incrediplotter-27.jpg';
+import incrediplotter28 from '../assets/incrediplotter/incrediplotter-28.jpg';
 
 function Incrediplotter() {
   return (
-    <div>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       <h1>The Incrediplotter</h1>
       <h2>YouTube video</h2>
       <iframe width="800" height="450"
       src="https://www.youtube.com/embed/jlRw-0B5N8U">
       </iframe>
       <h2>The following is pretty much a transcription of the above YouTube video.</h2>
-
+      <br></br>
+      <img src={incrediplotter1} alt="Incrediplotter drawing"/>
+      <br></br>
       ***1
 
       <h3>The quick rundown</h3>
@@ -34,7 +64,7 @@ function Incrediplotter() {
       ***6
       <br/><br/>
       So as soon as you have something where you can just use your hands to twist a couple of knobs to position the pen anywhere over the paper, that's when you can start driving the motors to do it automatically. So to drive it, I had to learn how stepper motors work. All I knew was that there are four wires coming out and that a 3D printer knows where the motors turn to. So I figured, well, they must be ground, motor voltage (e.g. 12 V), logic voltage (5 V), and data. But that's not how it works at all. Really, these are all power wires in a way. They just need to be turned on in the right order in a certain manner so that it completes one "step" at a time. When I saw this clip on YouTube, it all made sense:
-
+      <br/><br/>
       <iframe width="800" height="450"
       src="https://www.youtube.com/embed/kAyDmovM18E">
       </iframe>
@@ -44,7 +74,7 @@ function Incrediplotter() {
       ***7
       <br/><br/>
       The stepper motor driver I used is a TMC2208. These are like twice as expensive as the ones in the Ender 3, but I chose them because they make the motors way more silent, which I think is surprising that just with the electronics a loud motor can become quiet. On this thing there's a lot of pins, but I could just ignore half of them if I don't care about Microplyer and StealthChop2, and SpreadCycle. What I did need was to screw the potentiometer on it to the right amount so it would limit the current, basically limiting the strength of the motor and limiting how much power it can draw from my supply. I saw a YouTube video that explained how to do this:
-
+      <br/><br/>
       <iframe width="800" height="450"
       src="https://www.youtube.com/embed/d-u_mzvw_eY?t=140">
       </iframe>
@@ -99,25 +129,54 @@ function Incrediplotter() {
       ***22
       <br/><br/>
       Then all of a sudden, I found a great shortcut. I was reading on Hacker News about someone's custom 3D printer firmware. One commenter had me looking at Klipper and I learned how that works: The computer sends rudimentary step and direction commands, and all the microcontroller does is very simple control of the motors. This way, Klipper on the computer would do all that complex drawing, storage, and motion stuff that I wanted to see. This sounded like it would be easy to give a try. So I set up Klipper on my computer using WSL, using <a href="https://github.com/dw-0/kiauh">a very nice install script I found (KIAUH)</a>. The setup went very smoothly.
+      ***23
       <br/><br/>
-      I thought I would have to write my own Klipper command parser for the STM32, but luckily my exact model of microcontroller was already included, and it was really easy to install. So then with Klipper and its web UI installed, I could just open up my browser to localhost and see it. Part of what makes this so easy is that in order to define what pins my motors and switches are on, all I have to do is write what they are in this printer configuration file and save it. This makes it really easy to change without reprogramming the microcontroller every time. In order to actually see and control the microcontroller stuff in Klipper, I had to use usbipd and PowerShell. And finally, I set up some custom G-code macros for lifting the pen up and down. I also glued down some limit switches so Klipper could home the machine. I crashed the machine a few more times trying to get the conversion factor right, but I got it. So with all that set up, now in LaserWeb4 I could generate G-code for a drawing and then I could drag and drop it right into Klipper and hit start, and it would start printing. This was brilliant and let me see the machine use its full potential. It was very cool. I wish I would have found this Klipper stuff earlier, but it was also cool to learn the basics of motor control on my own. It's neat that thanks to Klipper, people can just build 3D printers all by themselves and not have to code anything. I also found this software called DrawingBot V3 which lets me drop in any photo and turn it into a G-code of a stylized, scribbly looking thing.
+      I thought I would have to write my own Klipper command parser for the STM32, but luckily my exact model of microcontroller was already included, and it was really easy to install. So then with Klipper and its web UI installed, I could just open up my browser to localhost and see it. Part of what makes this so easy is that in order to define what pins my motors and switches are on, all I have to do is write what they are in this printer configuration file and save it. This makes it really easy to change without reprogramming the microcontroller every time. 
+      <pre><code>
+        [stepper_x]
+        step_pin: PA1
+        dir_pin: !PA2 # ! is for not
+        endstop_pin: ^PB8 # ^ is for pull-up, cool
+      </code></pre>
+      <br/><br/>
+      In order to actually see and control the microcontroller stuff in Klipper, I had to use usbipd and PowerShell. And finally, I set up some custom G-code macros for lifting the pen up and down.
+      <pre><code>
+      [gcode_macro PEN_DOWN]
+      gcode:
+          SET_SERVO SERVO=my_pen ANGLE=45
+          G4 P250
+
+      [gcode_macro PEN_UP]
+      gcode:
+          SET_SERVO SERVO=my_pen ANGLE=117
+          G4 P250
+      </code></pre>
+      I also glued down some limit switches so Klipper could home the machine.
+      ***24
+      <br></br>
+      I crashed the machine a few more times trying to get the conversion factor right, but I got it. So with all that set up, now in LaserWeb4 I could generate G-code for a drawing and then I could drag and drop it right into Klipper and hit start, and it would start printing. This was brilliant and let me see the machine use its full potential. It was very cool. I wish I would have found this Klipper stuff earlier, but it was also cool to learn the basics of motor control on my own. It's neat that thanks to Klipper, people can just build 3D printers all by themselves and not have to code anything. I also found this software called <a href="http://drawingbotv3.com/">DrawingBotV3</a> which lets me drop in any photo and turn it into a G-code of a stylized, scribbly looking thing.
+      ***25
       <br/><br/>
       So as happy as I was with all that Klipper stuff, it still just wasn't very fun to use. I had to spend a lot of time finding the right picture and doing the right method of converting it to a vector and G-code and all that. On top of that, when I dropped stuff into LaserWeb4, it would just cause the pen to lift up and down between every little line segment, which was awful. Then I got an idea. What if I made something where I just tell it what to draw and it would just draw magically? At first, this sounded unrealistic; it was just a joke. But, as I thought about it more, it seemed pretty easy to do. I would just have AI generate a picture.
       <br/><br/>
       At first I tried just having it run on my own computer. It was quick enough, but it just wasn't reliable at giving me things that a pen plotter could actually draw well. There were too many details and big filled-in areas. So I looked into alternatives, one of which was Google Gemini, which followed my prompts much better. I found out I could do this in code using their API for free. I can't believe this is free, and it's just as fast as my own computer, and the images are a lot higher quality. This is why I feel like this idea has only really become feasible in the past year or two.
+      ***26
       <br/><br/>
-      So from then on, I did all that stuff I mentioned at the beginning of the video, and yeah, it works great. The hardest part of all this was finding something that could turn a picture into a vector line drawing. I had to look through GitHub issues, comments, and pull requests to find a specific old version of AutoTrace that worked on my computer. One thing I tried to do in my Python code was to have the computer make some remark about your request while it's waiting for the picture to be generated. This would fill in the dead space between your request and the start of the drawing.
+      So from then on, I did all that stuff I mentioned in my quick rundown. The hardest part of all this was finding something that could turn a picture into a vector line drawing. I had to look through GitHub issues, comments, and pull requests to find a specific old version of AutoTrace that worked on my computer. One thing I tried to do in my Python code was to have the computer make some remark about your request while it's waiting for the picture to be generated. This would fill in the dead space between your request and the start of the drawing.
       <br/><br/>
-      "Draw a Screaming Jelly Bean.
-      "<br/><br/>
-      "Screaming Jelly Bean sounds like my dentist's dream and my sugar-addled nightmare. Buckle up. We're in for a vibrant, possibly gelatinous ride.
-      "<br/><br/>
+      <i>"Draw a Screaming jelly bean."</i>
+      <br/><br/>
+      <i>"Screaming Jelly Bean sounds like my dentist's dream and my sugar-addled nightmare. Buckle up. We're in for a vibrant, possibly gelatinous ride."</i>
+      <br/><br/>
       It did fill that purpose very well, but it got kind of annoying so I turned it off.
       <br/><br/>
-      As for the interface, I wanted to make it so you could just say "Computer, draw blah, blah, blah, blah," and it would do it. No button presses involved. I got the wake word part working for that, so you could say "computer" and it would start listening, but the next obstacle would have been to make the computer stop listening automatically. But that would have been a whole other ordeal. So I just stuck with a button press since that was easier.
+      As for the interface, I wanted to make it so you could just say "Computer, draw blah, blah, blah, blah," and it would do it -- no button presses involved. I got the wake word part working for that, so you could say "computer" and it would start listening, but the next obstacle would have been to make the computer stop listening automatically. But that would have been a whole other ordeal, so I just stuck with a button press since that was easier.
+      ***27
       <br/><br/>
-      Additionally, only around this point did I realize that for the electronics I could have just used the control board that came with the Ender 3. That would have saved some time. But in the end, I am pretty happy with how this turned out. It's a weird feeling to put together a machine that can draw anything you tell it to and get... the problem is I just don't know what to tell it to draw. I don't really have any good ideas. But I did learn a lot of cool stuff making this, so I think it was well worth it.
-
+      Additionally, only around this point did I realize that for the electronics I could have just used the control board that came with the Ender 3. That would have saved some time. 
+      ***28
+      <br/><br/>
+      But in the end, I am pretty happy with how this turned out. It's a weird feeling to put together a machine that can draw anything you tell it to and get... the problem is I just don't know what to tell it to draw. I don't really have any good ideas. But I did learn a lot of cool stuff making this, so I think it was well worth it.
     </div>
   );
 }
