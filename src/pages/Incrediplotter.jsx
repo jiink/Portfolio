@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import incrediplotter1 from '../assets/incrediplotter/incrediplotter-1.jpg';
 import incrediplotter2 from '../assets/incrediplotter/incrediplotter-2.jpg';
 import incrediplotter3 from '../assets/incrediplotter/incrediplotter-3.jpg';
@@ -56,8 +57,17 @@ gcode:
 `;
 
 function Incrediplotter() {
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0
+    });
+  };
+
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+      <Link to="/">
+        <button>Back to Home</button>
+      </Link>
       <h1>The Incrediplotter</h1>
       <p>Last edit: September 2025</p>
       <h2>YouTube video</h2>
@@ -263,7 +273,8 @@ function Incrediplotter() {
       <a href={incrediplotter33_hires} target="_blank">
         <img src={incrediplotter33} alt="Description of incrediplotter33"/>
       </a>
-      <br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br><br></br>
+      <br></br><br></br>
+      <button onClick={scrollToTop}>Back to Top</button>
     </div>
   );
 }

@@ -25,7 +25,7 @@ function Home() {
         <h3>The Incrediplotter</h3>
         <img className='thumbnail' src="./src/assets/led-board-thumb.jpg" alt="The Incrediplotter" />
       </div>
-      <p>More project writeups are coming soon.</p>
+      <p>There are more writeups I would like to make in the future.</p>
       <p>
         Is there something in particular I've worked on that you'd like me to write a post on? Please let me know!
         If there's a project listing that doesn't have details inside, I'd still be happy to talk about it.
