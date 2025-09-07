@@ -276,6 +276,8 @@ function Incrediplotter() {
       <br></br>
       <p>Again, credits to <a target="_blank" rel="noopener noreferrer" href="https://toxicpoison.github.io/portfolio/index.html">my brother</a> for the mechanical design of everything.</p>
       <br></br>
+      <a target="_blank" href="https://github.com/jiink/incrediplotter">Source code for my custom firmware on GitHub</a>
+      <a target="_blank" href="https://github.com/jiink/incrediplotter-ai">Source code for the AI gimmick on GitHub</a>
       <br></br>
       <button onClick={scrollToTop}>Back to Top</button>
     </div>
