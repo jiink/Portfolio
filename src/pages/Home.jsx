@@ -18,13 +18,11 @@ function Home() {
         and I like it when there's a tangible effect.
         I also think it's a really fun challenge to work around limited computing resources.
       </p>
-      <Link to="/projects/esp32-desk-led-board">
-        <div className="project-card">
-          <h3 className="project-card-title">ESP32 Desk LED Board</h3>
-          <p className="project-card-subtitle">interactable display of time, weather, and art</p>
-          <img className='thumbnail' src={led_board_thumb} />
-        </div>
-      </Link>
+      <div className="project-card-disabled">
+        <h3 className="project-card-title">ESP32 Desk LED Board</h3>
+        <p className="project-card-subtitle">interactable display of time, weather, and art</p>
+        <img className='thumbnail' src={led_board_thumb} />
+      </div>
       <Link to="/projects/incrediplotter">
         <div className="project-card">
           <h3 className='project-card-title'>The Incrediplotter</h3>
