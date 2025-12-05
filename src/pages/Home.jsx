@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import viteLogo from '../assets/darkastro.png'; // Adjust the path if necessary
 import led_board_thumb from "../assets/led-board-thumb.jpg";
 import incrediplotter_thumb from "../assets/incrediplotter-thumb.jpg";
-import strodelo_thumb from "../assets/strodelo-thumb.jpg";
 import disposable_furnaces_thumb from "../assets/disposable-furnaces-thumb.jpg";
 function Home() {
   return (
@@ -32,11 +31,6 @@ function Home() {
           <img className='thumbnail' src={incrediplotter_thumb} />
         </div>
       </Link>
-      <div className="project-card-disabled">
-        <h3 className='project-card-title'>Strodelo</h3>
-        <p className="project-card-subtitle">view any CAD model in MR</p>
-        <img className='thumbnail' src={strodelo_thumb} />
-      </div>
       <div className="project-card" onClick={() => window.location.href = 'https://modrinth.com/mod/disposable-furnaces'}>
         <h3 className='project-card-title'>Disposable Furnaces</h3>
         <p className="project-card-subtitle">Minecraft mod; quick smelting for the hurried traveler</p>

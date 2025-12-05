@@ -27,7 +27,7 @@ import uperrleftartifacting from '../assets/ledboard/uperrleftartifacting.jpg';
 import weatherDemo from '../assets/ledboard/weatherdemo.mp4';
 import newswdemo1 from '../assets/ledboard/newswdemo1.mp4';
 import newswdemo2 from '../assets/ledboard/newswdemo2.mp4';
-
+import oldHousingBack from '../assets/ledboard/old housing back.jpg'
 const code1 = `void initializeApplets()
 {
     addApplet("Simple Clock", &simpleClockSetup, &simpleClockLoop);
@@ -252,6 +252,9 @@ I also liked that I was able to order my PCB in different colors, I thought it w
 <img src={oldHousingFront}/>
 
 <p>However, it was ugly! Since I felt the wiring and assembly was sketchy, I didn&#39;t feel safe keeping this sketchy thing powered on my nightstand. As soon as I had re-adjust something inside, and realized it would take an hour to do so, I lost my patience with this design. I decided to do a redesign.</p>
+
+<img src={oldHousingBack}/>
+
 <h3 id="4-3-the-redesign">4.3. The redesign</h3>
 <p>These were my requirements for the redesign:</p>
 <ol>
