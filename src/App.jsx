@@ -6,6 +6,7 @@ import './App.css'
 import Home from './pages/Home';
 import Esp32DeskLedBoard from './pages/Esp32DeskLedBoard';
 import Incrediplotter from './pages/Incrediplotter';
+import Crankentimer from './pages/CrankenTimer';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Router basename="/Portfolio">
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/projects/crankentimer" element={<Crankentimer />} />
           <Route path="/projects/esp32-desk-led-board" element={<Esp32DeskLedBoard />} />
           <Route path="/projects/incrediplotter" element={<Incrediplotter />} />
         </Routes>
