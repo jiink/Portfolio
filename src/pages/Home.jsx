@@ -4,6 +4,7 @@ import viteLogo from '../assets/darkastro.png'; // Adjust the path if necessary
 import led_board_thumb from "../assets/led-board-thumb.jpg";
 import incrediplotter_thumb from "../assets/incrediplotter-thumb.jpg";
 import disposable_furnaces_thumb from "../assets/disposable-furnaces-thumb.jpg";
+import crankentimer_thumb from "../assets/crankentimer-thumb.jpg";
 function Home() {
   return (
     <>
@@ -21,7 +22,7 @@ function Home() {
         <div className="project-card">
           <h3 className="project-card-title">Crankentimer</h3>
           <p className="project-card-subtitle">That hand-powered timer that I hate</p>
-          <img className='thumbnail' src={led_board_thumb} />
+          <img className='thumbnail' src={crankentimer_thumb} />
         </div>
       </Link>
       <Link to="/projects/esp32-desk-led-board">
