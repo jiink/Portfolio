@@ -31,6 +31,7 @@ import crankentimer27 from '../assets/crankentimer/crankentimer-27.jpg';
 import crankentimer28 from '../assets/crankentimer/crankentimer-28.jpg';
 import crankentimer29 from '../assets/crankentimer/crankentimer-29.jpg';
 import crankentimer30 from '../assets/crankentimer/crankentimer-30.jpg';
+import crankentimer31 from '../assets/crankentimer/crankentimer-31.jpg';
 import twinbell from '../assets/crankentimer/twin-bell.jpg';
 import ppktimerrun from '../assets/crankentimer/ppk-timer-run.png';
 import ppkcrankrun1 from '../assets/crankentimer/ppk-crank-run-1.png';
@@ -90,7 +91,7 @@ function Crankentimer() {
 <p>I thought I&#39;d never use Arduino IDE again, but so far this was making things move along quickly, I am beginning to appreciate it again.</p>
 <p>As for the user interface, I imagined that as you crank the timer, the time on the display would increase, and once you stop cranking, the timer would begin counting down. But I figured there should be a knob in case you want to adjust the time after setting it, so I added one. It&#39;s a KY040, which always makes me wish I had a potentiometer instead. No amount of software debouncing and state machines could get me out of its crazy behavior on any microcontroller I try this with. This time, I put a couple of capacitors and it helped a lot. Now instead of a 50% chance of clicking the correct way and a 20% chance of it registering the correct number of indentations, it&#39;s more like a 90% correctness rate. </p>
 <p>I also added a speaker on a GPIO with a couple series resistors. I found a site where I can convert any MIDI file I found into an array of notes and delays for my MCU to play a tune when the time is up.</p>
-<img src={crankentimer7}/>
+<img src={crankentimer7} width={400}/>
 <video controls src={crankentimer_alarm_clip}/>
 <h3 id="now-that-i-had-some-low-power-device-to-drive-i-could-focus-on-the-power-generation-part-of-this-">Now that I had some low power device to drive, I could focus on the power generation part of this.</h3>
 <p>I thought of using a stepper motor as a generator because when I moved the bed back and forth on my old 3D printer, the printhead&#39;s fan started spinning. I&#39;ve also seen a video clip of someone briefly booting up their 3D printer (LCD and all) by moving a part back and forth.</p>
@@ -105,6 +106,7 @@ function Crankentimer() {
 <h3 id="now-i-needed-to-get-dc-voltage-from-the-four-wires-coming-out-">Now I needed to get DC voltage from the four wires coming out.</h3>
 <p>Since a stepper motor has 2 coils, I needed to make two full bridge rectifiers and connect them in series to get a higher voltage that I could step-down. It was tricky to find a compact way to make a full bridge rectifier on a breadboard, but I figured it out.</p>
 <img src={crankentimer10}/>
+<img src={crankentimer31}/>
 <p>I was then able to get a nice 15 volts DC by cranking my motor (or 20 V if I try really hard). But that&#39;s with no load. I shorted the DC output and cranked while measuring how much current it produced. I forgot how much exactly, but it was a little disappointing, I think it was 150 mA. And certainly the voltage was much lower as I could not crank as fast as I did with no load. </p>
 <p>I needed to know exactly how much power I needed to charge a battery. My Adafruit PowerBoost 500C needs 500 mA. This was not looking good. I tried using a resistor on the 5V end of my new DC-DC buck converter modules instead of a short circuit to simulate a more reasonable load. I forgot what the results were. I approached this problem from both sides simultaneously:</p>
 <ol>
@@ -123,7 +125,7 @@ function Crankentimer() {
 <p>Many designs required extra hardware like bearings and rods. I <a href="https://makerworld.com/en/models/774955-slim-planetary-gearbox-for-nema-17#profileId-711386">found one that only requires 4 M3 screws</a> to mount it to the motor housing. Looking at the design, I was skeptical that the plastic rods would survive, but all the commenters seemed to like it. It used a planetary gear design.</p>
 <p>The big challenge here would be mounting the sun gear to my motor. First off, I&#39;d have to remove the brass thing off my motor. I couldn&#39;t just increase the sun gear diameter. Turns out this is something a lot of others have also figured out. I found a little video clip of someone just using two hammers to remove the brass in under a minute. I used a hammer and a wrench and spent a lot of time smacking them together, it wasn&#39;t doing anything. So I used a torch to heat up the brass and try again. It took a lot of heat and time but eventually it started coming off little by little. I was amazed I didn&#39;t get the shaft all bent up or misaligned. </p>
 <p>Now the problem was that the sun gear had a D-shaped hole but my shaft was O-shaped. A D shaft would make tolerances so much easier, but filing the shaft down accurately sounded too risky so I brought the sun gear into Onshape and made its hole into an O and printed a few out to hammer in. My first attempt got the sun gear on, but it cracked. I adjusted the tolerance and it helped. It was really hard to get all the planet gears in.</p>
-<img src={crankentimer30}/>
+<img src={crankentimer30} width={200}/>
 <p>Once assembly was done, I was afraid it wouldn't forward-drive at all, let alone backdrive. I had to print a handle to even see if it would rotate. So I made a stick with a hole in it. It did rotate, which was a relief. Things were looking good.</p>
 <p>I now needed a better handle with a knob so I could rotate it continually. My brother Kyle designed it. It worked. But then the 3D printed shaft broke. So he re-designed the part to be bigger and made a corresponding update to the handle.</p>
 
@@ -168,7 +170,7 @@ function Crankentimer() {
 <img src={crankentimer18}/>
 <p>My board passed the smoke test and everything worked. I also designed in a resistor divider from the USB-5V input to a MCU pin so it could keep track of how long it gets charged for and use that info to decide how much time to start the timer on. </p>
 <img src={crankentimer19}/>
-<p>I&#39;m glad I tried out the 3D printed PCB thing. It&#39;s not as easy as I thought, but I wasn&#39;t missing drawing out my perfboard plan in Paint, measuring and cutting and stripping and bending lots of wires, making lots of solder bridges, clearing up unintended solder bridges, overlapping many wires, etc. </p>
+<p>I&#39;m glad I tried out the 3D printed PCB thing. It&#39;s not as easy as I thought, but I wasn&#39;t missing drawing out my perfboard plan in Paint, measuring and cutting and stripping and bending lots of wires, making lots of solder bridges, clearing up unintended solder bridges, overlapping many wires, etc. <br/>(However, desoldering is even worse than I thought. This is when plastic starts to melt and sticks to the pins you're trying to pull out. I had to cut many pins and components to get everything off when I disassembled everything later.)</p>
 <p>Next I turned to something else I had bought earlier for this project:</p>
 <h3 id="a-hand-crank-powered-flashlight-off-amazon-">A hand-crank powered flashlight off Amazon.</h3>
 <img src={crankentimer4}/>
