@@ -1,5 +1,5 @@
 import React from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
 import { SparkRenderer, SplatMesh } from '@sparkjsdev/spark';
@@ -47,6 +47,7 @@ import layout from '../assets/crankentimer/layout.png';
 
 function Crankentimer() {
   const containerRef = useRef(null);
+  const [showModel, setShowModel] = useState(false);
 
   const scrollToTop = () => {
     window.scrollTo({
@@ -55,41 +56,37 @@ function Crankentimer() {
   };
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    // 2. If the user hasn't clicked "load" yet, do nothing.
+    if (!showModel || !containerRef.current) return;
 
     const container = containerRef.current;
     const baseUrl = import.meta.env.BASE_URL;
 
-    // 1. Initialize Three.js Scene, Camera, and Renderer
+    // Initialize Three.js Scene, Camera, and Renderer
     const scene = new THREE.Scene();
     
-    // Setup Camera
     const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.01, 1000);
-    camera.position.set(0, 0, 3); // Move camera back so we can see the model
+    camera.position.set(1, 2, 1.2);
 
-    // Setup WebGL Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
-    // Add OrbitControls so the user can drag, rotate, and zoom the model
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // 2. Initialize Spark Renderer
+    // Initialize Spark Renderer
     const spark = new SparkRenderer({ renderer });
     scene.add(spark);
 
-    // 3. Load the Gaussian Splat
+    // Load the Gaussian Splat
     const splatURL = `${baseUrl}gs_stepper_motor_crank_cropped.ply`;
     const splatMesh = new SplatMesh({ url: splatURL });
     
-    // Optional: Adjust position and rotation of the splat model
     splatMesh.quaternion.set(1, 0, 0, 0);
-    // splatMesh.position.set(0, 0, 0); 
     scene.add(splatMesh);
 
-    // 4. Handle resizing if the window or container size changes
+    // Handle resizing
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {
         const { width, height } = entry.contentRect;
@@ -100,16 +97,14 @@ function Crankentimer() {
     });
     resizeObserver.observe(container);
 
-    // 5. Animation Loop
+    // Animation Loop
     renderer.setAnimationLoop(() => {
-      controls.update(); // Required for damping
+      controls.update(); 
       renderer.render(scene, camera);
-      
-      // Uncomment the line below if you want the model to constantly spin automatically
-      splatMesh.rotation.y += 0.001; 
+      splatMesh.rotation.y += 0.001;
     });
 
-    // 6. Cleanup on component unmount
+    // Cleanup
     return () => {
       resizeObserver.disconnect();
       renderer.setAnimationLoop(null);
@@ -119,7 +114,8 @@ function Crankentimer() {
       renderer.dispose();
       controls.dispose();
     };
-  }, []);
+  }, [showModel]); // 3. Add showModel to the dependency array so this runs when state changes
+
 
 
   return (
@@ -176,17 +172,51 @@ function Crankentimer() {
 <img src={crankentimer5}/>
 <br></br>
 <div 
-  ref={containerRef} 
-  style={{ 
-    width: '60vw', 
-    height: '60vh', 
-    backgroundColor: '#000', 
-    borderRadius: '15px',
-    overflow: 'hidden',
-    position: 'relative',
-    cursor: 'grab' // Indicates to the user that they can grab/rotate the canvas
-  }} 
-/>
+        style={{ 
+          width: '500px', 
+          height: '500px', 
+          backgroundColor: '#111', 
+          borderRadius: '15px',
+          overflow: 'hidden',
+          position: 'relative',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '20px',
+          marginBottom: '20px'
+        }} 
+      >
+        {!showModel ? (
+          // Show this button before loading
+          <div style={{ textAlign: 'center', color: '#fff' }}>
+            <p style={{ marginBottom: '15px' }}>3D Gaussian Splat (30 MB)</p>
+            <button 
+              onClick={() => setShowModel(true)}
+              style={{
+                padding: '12px 24px',
+                fontSize: '16px',
+                cursor: 'pointer',
+                backgroundColor: '#007bff',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px'
+              }}
+            >
+              Reveal
+            </button>
+          </div>
+        ) : (
+          // Show the actual WebGL container once the button is clicked
+          <div 
+            ref={containerRef} 
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              cursor: 'grab' 
+            }} 
+          />
+        )}
+      </div>
 <br></br>
 <p>I designed this assembly myself. The hardest part was figuring out how to mount something to the motor shaft. I have all the motors of an Ender 3, but none of them had an obvious way to mount to the shaft - I could pop off the pulleys, but then I&#39;m left with a smooth circular shaft. I used the motor that held the lead screw; I designed something that could get squeezed in there.</p>
 <p>It was difficult to get the tolerances so the parts would fit into holes and shafts tight enough to hold under torque. using some electrical tape let me skip a few re-prints. This clear PETG is so ugly, I can&#39;t wait to finish using it. </p>
