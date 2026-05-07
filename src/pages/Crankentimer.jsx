@@ -1,5 +1,9 @@
 import React from 'react';
+import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import * as THREE from 'three';
+import { SparkRenderer, SplatMesh } from '@sparkjsdev/spark';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import crankentimerhero1 from '../assets/crankentimer/crankentimer-hero-1.jpg';
 import crankentimer1 from '../assets/crankentimer/crankentimer-1.jpg';
 import crankentimer2 from '../assets/crankentimer/crankentimer-2.jpg';
@@ -42,11 +46,81 @@ import schematic from '../assets/crankentimer/schematic.png';
 import layout from '../assets/crankentimer/layout.png';
 
 function Crankentimer() {
+  const containerRef = useRef(null);
+
   const scrollToTop = () => {
     window.scrollTo({
       top: 0
     });
   };
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const container = containerRef.current;
+    const baseUrl = import.meta.env.BASE_URL;
+
+    // 1. Initialize Three.js Scene, Camera, and Renderer
+    const scene = new THREE.Scene();
+    
+    // Setup Camera
+    const camera = new THREE.PerspectiveCamera(60, container.clientWidth / container.clientHeight, 0.01, 1000);
+    camera.position.set(0, 0, 3); // Move camera back so we can see the model
+
+    // Setup WebGL Renderer
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    // Add OrbitControls so the user can drag, rotate, and zoom the model
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    // 2. Initialize Spark Renderer
+    const spark = new SparkRenderer({ renderer });
+    scene.add(spark);
+
+    // 3. Load the Gaussian Splat
+    const splatURL = `${baseUrl}gs_stepper_motor_crank_cropped.ply`;
+    const splatMesh = new SplatMesh({ url: splatURL });
+    
+    // Optional: Adjust position and rotation of the splat model
+    splatMesh.quaternion.set(1, 0, 0, 0);
+    // splatMesh.position.set(0, 0, 0); 
+    scene.add(splatMesh);
+
+    // 4. Handle resizing if the window or container size changes
+    const resizeObserver = new ResizeObserver((entries) => {
+      for (let entry of entries) {
+        const { width, height } = entry.contentRect;
+        renderer.setSize(width, height);
+        camera.aspect = width / height;
+        camera.updateProjectionMatrix();
+      }
+    });
+    resizeObserver.observe(container);
+
+    // 5. Animation Loop
+    renderer.setAnimationLoop(() => {
+      controls.update(); // Required for damping
+      renderer.render(scene, camera);
+      
+      // Uncomment the line below if you want the model to constantly spin automatically
+      splatMesh.rotation.y += 0.001; 
+    });
+
+    // 6. Cleanup on component unmount
+    return () => {
+      resizeObserver.disconnect();
+      renderer.setAnimationLoop(null);
+      if (container.contains(renderer.domElement)) {
+        container.removeChild(renderer.domElement);
+      }
+      renderer.dispose();
+      controls.dispose();
+    };
+  }, []);
+
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
@@ -100,6 +174,20 @@ function Crankentimer() {
 <h3 id="now-i-just-needed-a-way-to-sustain-the-rotation-of-the-motor-">Now I just needed a way to sustain the rotation of the motor.</h3>
 <p>Also, after measuring the AC voltage through one of the coils, I realized I also needed a gear ratio to make the motor spin faster.</p>
 <img src={crankentimer5}/>
+<br></br>
+<div 
+  ref={containerRef} 
+  style={{ 
+    width: '60vw', 
+    height: '60vh', 
+    backgroundColor: '#000', 
+    borderRadius: '15px',
+    overflow: 'hidden',
+    position: 'relative',
+    cursor: 'grab' // Indicates to the user that they can grab/rotate the canvas
+  }} 
+/>
+<br></br>
 <p>I designed this assembly myself. The hardest part was figuring out how to mount something to the motor shaft. I have all the motors of an Ender 3, but none of them had an obvious way to mount to the shaft - I could pop off the pulleys, but then I&#39;m left with a smooth circular shaft. I used the motor that held the lead screw; I designed something that could get squeezed in there.</p>
 <p>It was difficult to get the tolerances so the parts would fit into holes and shafts tight enough to hold under torque. using some electrical tape let me skip a few re-prints. This clear PETG is so ugly, I can&#39;t wait to finish using it. </p>
 <p>Now I could spin the motor around and round. </p>
